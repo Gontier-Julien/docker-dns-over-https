@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     network_mode: "host"
     volumes:
-       - ./doh/doh-server.conf:/server/doh-server.conf
+      - ./doh/doh-server.conf:/server/doh-server.conf
 ```
 # TODO
 - [ ] Support for arm64
