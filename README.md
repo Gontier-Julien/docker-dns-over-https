@@ -12,8 +12,6 @@ It principaly a base image for me and a learning one to build tiny secure docker
 # Docker Compose configuration:
 >This image doesn't come with a base config, but you can find it [here](https://github.com/m13253/dns-over-https/blob/master/doh-server/doh-server.conf)
 ```
-version: '3'
-
 services:
   doh-server:
     container_name: doh

@@ -1,0 +1,8 @@
+services:
+  doh-server:
+    container_name: doh
+    image: snowy68/dns-over-https:latest
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./doh/doh-server.conf:/server/doh-server.conf
