@@ -1,11 +1,11 @@
 # Docker-dns-over-https 📦
-A docker super tiny image using distroless as it base to run [a DOH server](https://github.com/m13253/dns-over-https)
->_This image is execpted to run behing a web server like NGINX._
+A docker super tiny image using distroless or scratch as it base to run [a DOH server](https://github.com/m13253/dns-over-https)
+>_This image is execpted to run behing a web server like NGINX or Traefik._
 
 # Featury bits & pieces 🪡
-A DOH server in a super tiny image (~8.5MB!)
+A DOH server in a super tiny image (>8.5MB!)
 
-This image come _ATM_ without any openssl support or arm64, but will in a near futur.
+This image come _ATM_ without any openssl support or arm64, but will in a near futur _maybe_.
 
 It principaly a base image for me and a learning one to build tiny secure docker image.
 
@@ -23,6 +23,7 @@ services:
     volumes:
       - ./doh/doh-server.conf:/server/doh-server.conf
 ```
+>To use the scratch image just replace the tag to "scratch"
 # TODO
 - [ ] Support for arm64
 - [ ] Image with openssl for those who want

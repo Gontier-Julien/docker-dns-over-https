@@ -1,5 +1,4 @@
 FROM golang:bullseye AS build
-ARG CGO_ENABLED=0
 
 WORKDIR /src
 
@@ -12,7 +11,7 @@ RUN apt update && apt -y install jq \
     && rm doh.tar.gz \
     && cd dns-over-https* \
     # Remove debug information
-    && sed -ie 's/GOBUILD = go build/GOBUILD = go build -ldflags "-s -w"/g' Makefile \
+    && sed -ie 's/GOBUILD = go build/GOBUILD = CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w"/g' Makefile \
     && make doh-server/doh-server \
     && mkdir /dist \
     && cp doh-server/doh-server /dist/doh-server \

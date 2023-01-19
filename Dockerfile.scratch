@@ -1,8 +1,8 @@
-FROM golang:bullseye AS build
+FROM golang:alpine AS build
 
 WORKDIR /src
 
-RUN apt update && apt -y install jq \
+RUN apk update && apk add --no-cache make curl jq \
 # download latest version of DOH
     && set -x ;\
     DOH_VERSION_LATEST="$(curl -s https://api.github.com/repos/m13253/dns-over-https/tags|jq -r '.[0].name')" \
@@ -11,19 +11,28 @@ RUN apt update && apt -y install jq \
     && rm doh.tar.gz \
     && cd dns-over-https* \
     # Remove debug information
-    && sed -ie 's/GOBUILD = go build/GOBUILD = CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w"/g' Makefile \
+    && sed -ie 's/GOBUILD = go build/GOBUILD = CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w"/g' Makefile \
     && make doh-server/doh-server \
     && mkdir /dist \
     && cp doh-server/doh-server /dist/doh-server \
     && echo ${DOH_VERSION_LATEST} > /dist/doh-server.version
 
-# use a distroless base image with glibc
-FROM gcr.io/distroless/static-debian11:nonroot-arm64
+# See https://stackoverflow.com/a/55757473/12429735RUN 
+RUN adduser \
+    --disabled-password \
+    --no-create-home \
+    --ingroup "nobody" \
+    --uid "$12345" \
+    "nodoy"
 
-COPY --from=build --chown=nonroot /dist /server
+# use a scratch image
+FROM scratch
 
+COPY --from=build /dist /server
+COPY --from=build /etc/passwd /etc/passwd
+COPY --from=build /etc/group /etc/group
 # run as non-privileged user
-USER nonroot
+USER nobody:nobody
 
 EXPOSE 8053
 
