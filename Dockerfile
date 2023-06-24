@@ -18,7 +18,7 @@ RUN apt update && apt -y install jq \
     && echo ${DOH_VERSION_LATEST} > /dist/doh-server.version
 
 # use a distroless base image with glibc
-FROM gcr.io/distroless/static-debian11:nonroot
+FROM gcr.io/distroless/static-debian12:nonroot
 
 COPY --from=build --chown=nonroot /dist /server
 
