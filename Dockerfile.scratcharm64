@@ -17,14 +17,6 @@ RUN apk update && apk add --no-cache make curl jq \
     && cp doh-server/doh-server /dist/doh-server \
     && echo ${DOH_VERSION_LATEST} > /dist/doh-server.version
 
-# See https://stackoverflow.com/a/55757473/12429735RUN 
-RUN adduser \
-    --disabled-password \
-    --no-create-home \
-    --ingroup "nobody" \
-    --uid "$12345" \
-    "nobody"
-
 # use a scratch image
 FROM scratch
 
