@@ -23,7 +23,7 @@ RUN adduser \
     --no-create-home \
     --ingroup "nobody" \
     --uid "$12345" \
-    "nodoy"
+    "nobody"
 
 # use a scratch image
 FROM scratch
